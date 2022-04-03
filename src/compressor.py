@@ -24,7 +24,6 @@ class Compressor:
 
     def __call__(self, image):
         initial_prediction = self.evaluator(image)
-        print(f"Initial prediction: {self.__to_label(initial_prediction)}")
 
         iteration = image
         previous_iteration = image
@@ -34,7 +33,5 @@ class Compressor:
             previous_iteration = iteration
             iteration = self.iteration(previous_iteration)
             iter_prediction = self.evaluator(iteration)
-            print(f"Current prediction: {self.__to_label(iter_prediction)}")
         else:
-            print(f"Size of final image: {previous_iteration.size}")
             return previous_iteration
