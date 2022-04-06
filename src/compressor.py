@@ -1,37 +1,25 @@
 """
-'Compress' image by resizing 
+'Compress' image by resizing
 """
-import json
+from abc import ABC, abstractmethod
 
-
-class Compressor:
+class Compressor(ABC):
     def __init__(self, evaluator):
         self.evaluator = evaluator
-        with open("imagenet_class_index.json") as f:
-            self.idx2label = json.load(f)
 
+    @abstractmethod
     def iteration(self, image):
-        """
-        Returns a a resized image that is 10 pixels smaller in both directions
-        """
-        current_size = image.size
-        new_size = (current_size[0] - 10, current_size[1] - 10)
-        image.thumbnail(new_size)
-        return image
-
-    def __to_label(self, pred):
-        return self.idx2label[str(int(pred))][1]
+        pass
 
     def __call__(self, image):
         initial_prediction = self.evaluator(image)
 
-        iteration = image
-        previous_iteration = image
+        iteration = previous_iteration = image
         iter_prediction = initial_prediction
 
         while iter_prediction == initial_prediction:
             previous_iteration = iteration
             iteration = self.iteration(previous_iteration)
             iter_prediction = self.evaluator(iteration)
-        else:
-            return previous_iteration
+
+        return previous_iteration

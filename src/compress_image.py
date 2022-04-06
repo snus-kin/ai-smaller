@@ -1,12 +1,12 @@
 """
-(Joke) Script that resizes an image until the neural net model predicts 
+(Joke) Script that resizes an image until the neural net model predicts
 something other than what it would for the full-size image
 """
 
 import os
 import argparse
 from PIL import Image
-from compressor import Compressor
+from resize_compressor import ResizeCompressor
 from jpeg_compressor import JPEGCompressor
 from classify_image import Evaluator
 
@@ -59,7 +59,7 @@ def main():
 
     evaluator = Evaluator()
     if args.compression == "resize":
-        compressor = Compressor(evaluator)
+        compressor = ResizeCompressor(evaluator)
     elif args.compression == "jpg":
         compressor = JPEGCompressor(evaluator)
 
